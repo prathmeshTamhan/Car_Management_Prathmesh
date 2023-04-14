@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#myForm").on("submit", function (event) {
+          event.preventDefault();
+
+          var id = $("#id").val();
+          var name = $("#name").val();
+          var color = $("#color").val();
+          var price = $("#price").val();
+          if (id === "") {
+            $("#idError").text("id is required.");
+          } else {
+            $("#idError").text("");
+          }
+
+          if (name === "") {
+            $("#nameError").text("name is required.");
+          } else {
+            $("#nameError").text("");
+          }
+
+          if (color === "") {
+            $("#colorError").text("color is required.");
+          } else {
+            $("#colorError").text("");
+          }
+
+          if (price === "") {
+            $("#priceError").text("price is required.");
+          } else {
+            $("#priceError").text("");
+          }
+          const submission = { id, name, color, price };
+
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/form",
+            data: submission,
+            success: function () {
+              console.log("Form submitted successfully:");
+              $("#myForm")[0].reset();
+            },
+            error: function (error) {
+              console.error("Form submission failed:", error);
+            },
+          });
+        });
+      });
+
+      //
+      for (var i = 0; i < response.length; i++) {
+        var x = response[i];
+
+        var row = $("<tr>");
+        row.append($("<td>").text(x.id));
+        row.append($("<td>").text(x.make));
+        row.append($("<td>").text(x.color));
+        row.append($("<td>").text(x.price));
+        $("#myTable tbody").append(row);
+      }
+    </script>
+  </head>
+  <body>
+    <form id="myForm">
+      <label for="id">Id</label>
+      <input id="id" name="id" />
+      <span id="idError" class="error"></span><br />
+      <label for="name">Name</label>
+      <input id="name" name="name" />
+      <span id="nameError" class="error"></span><br />
+      <label for="color">Color</label>
+      <input id="color" name="color" />
+      <span id="colorError" class="error"></span><br />
+      <label for="price">Price</label>
+      <input id="price" name="price" />
+      <span id="priceError" class="error"></span><br />
+      <input type="submit" value="Submit" />
+    </form>
+
+    <br />
+    <table id="myTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>MAKE</th>
+          <th>COLOR</th>
+          <th>PRICE</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+              
+    </table>
+  </body>
+</html>
